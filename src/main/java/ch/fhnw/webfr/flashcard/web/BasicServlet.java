@@ -20,17 +20,13 @@ import ch.fhnw.webfr.flashcard.web.requests.RequestHandler;
 
 @SuppressWarnings("serial")
 public class BasicServlet extends HttpServlet {
-    /*
-     * Attention: This repository will be used by all clients, concurrency
-     * could be a problem. THIS VERSION IS NOT PRODUCTION READY!
-     */
-    private QuestionnaireRepository questionnaireRepository;
-
     private RequestHandler requestHandler;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html; charset=utf-8");
+
+        QuestionnaireRepository questionnaireRepository = (QuestionnaireRepository) request.getServletContext().getAttribute("repository");
 
         String[] pathElements = request.getRequestURI().split("/");
         if (isLastPathElementQuestionnaires(pathElements)) {
@@ -56,9 +52,8 @@ public class BasicServlet extends HttpServlet {
         return prev.equals("questionnaires") && !id.isEmpty();
     }
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        questionnaireRepository = new QuestionnaireInitializer().initRepoWithTestData();
-    }
+//    @Override
+//    public void init(ServletConfig config) throws ServletException {
+//        super.init(config);
+//    }
 }
